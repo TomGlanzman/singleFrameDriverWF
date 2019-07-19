@@ -16,5 +16,5 @@ source $workflowroot/configTask.sh
 source $workflowroot/cvmfsSetup.sh
 
 ## Establish a repository for brighter-fatter generation
-$workflowroot/singleFrameDriver.sh |tee $workflowroot/singleFrameDriver.log
+$workflowroot/singleFrameDriver.sh |& tee $workflowroot/singleFrameDriver.log
 

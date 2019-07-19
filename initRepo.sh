@@ -32,10 +32,13 @@ if [ ! -d ${PT_REPODIR} ]; then
 
 exit
 
+    ## Copy in the (fake) brighter-fatter gains
+    echo `date` " [Setup BF gains]"
+    mkdir ${PT_REPODIR}/calibrations
+    cp -pr ${PT_REPODIR}/../fake/bfGain*.pkl ${PT_REPODIR}/calibrations
+
+    ## Ingest some simulated data
     echo `date` " [ingestDriver.py image data]"
-    # Where that `@$1` refers to a file with an explicit list of fits
-    # files to ingest... we have a script that helps create that
-    # list..
     # Note that "--cores" can probably be '1' as we're only creating sym-links
     fitsFileList=ingestFileTest.txt
     ingestDriver.py ${PT_REPODIR} @$PWDSAVE/${fitsFileList} --cores 5 --mode link --output ${PT_REPODIR} -c allowError=True register.ignore=True

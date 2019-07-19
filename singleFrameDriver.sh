@@ -85,7 +85,7 @@ set -x
 visit=500086
 dir=test1
 nCores=10
-echo singleFrameDriver.py ${PT_REPODIR} --rerun ${dir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn
+singleFrameDriver.py ${PT_REPODIR} --rerun ${dir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn
 
 
 rc=$?
