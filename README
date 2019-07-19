@@ -1,0 +1,22 @@
+singleFramdDriver @ NERSC with Parsl
+
+Current list of files (7/19/2019)
+
+BFworkflow.py           - top-level Parsl workflow scripot
+buildFileList.sh    	- stand-alone util to build list of FITS image files
+configTask.sh	    	- workflow config
+cvmfsSetup.sh	    	- DM setup & config
+ingestFileTest.txt	- List of FITS image files
+initRepo.sh	    	- Run-once build repo scripot
+initRepo.log	    	- output of initRepo.sh
+pConfig.py	    	- Parsl config
+runInit.sh	    	- driver to run initRepo.sh
+runSingleFrameDriver.sh - dev driver to run singleFrameDriver.sh
+runWorkflow.sh	    	- driver to run BFworkflow.py
+singleFrameDriver.sh	- driver to run singleFrameDriver (typically from within
+		      	  the workflow, but also possible to run manually)
+wstat.py	        - Parsl stand-alone monitoring tool (reads monitoring.db)
+
+
+
+
