@@ -9,7 +9,7 @@
 ## T.Glanzman - May 2019
 
 ##
-## import all needed Parsl elements
+## import Parsl elements
 ##
 
 import sys,os,logging
