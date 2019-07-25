@@ -26,7 +26,6 @@ export PATH="'${PATH}:${HOME}'"/.local/bin
 
 ##     PT_WORKFLOWROOT is where the workflow scripts live (must be same dir as this config script)
 export PT_WORKFLOWROOT="$(realpath $(dirname $BASH_SOURCE))"
-#echo "PT_WORKFLOWROOT = "$PT_WORKFLOWROOT
 
 export PT_SCRATCH='/global/cscratch1/sd/descdm'
 
@@ -36,6 +35,7 @@ export PT_OUTPUTDIR=$PT_SCRATCH
 ##      PT_DEBUG is a global flag for workflow development & debugging
 export PT_DEBUG=False
 
+
 #####################################################
 ###########  One-time Setup
 #####################################################
@@ -43,19 +43,11 @@ export PT_DEBUG=False
 ### The following values are required to establish a working DM-style
 ### repository
 
-##### Define the inputs needed by BF kernel generation
-export PT_DESCDM_PREFIX=${PT_SCRATCH}'/DC2/Run2.1i'
-
-## Location of the BF flats
-#export BF_FLAT_DATA_DIR=${PT_DESCDM_PREFIX}/calibration/bf_flats_20190328_redo_test
-export PT_BF_FLAT_DIR=${PT_DESCDM_PREFIX}/calibration/bf_flats_20190408/*
-
 ##     PT_CALIBS points to a "CALIB" tar ball to populate the repository (is this needed??)
 export PT_CALIBS='/global/projecta/projectdirs/lsst/production/DC2_ImSim/Run1.2i/CALIB/CALIB_Run1.2i.tar.gz'
 
 ##     PT_REPODIR is the location of output repository
 export PT_REPODIR=${PT_OUTPUTDIR}'/tomTest/sfd-1'   # singleFrameDriver test repo(s)
-
 
 
 ###################################################
@@ -68,12 +60,11 @@ export PT_REPODIR=${PT_OUTPUTDIR}'/tomTest/sfd-1'   # singleFrameDriver test rep
 ##                 Note that this value may be adjusted later with a numeric postfix.
 export PT_RERUNDIR='20190701'
 
-## Define the input BF-flat visit pairs
-export PT_BF_VISITPAIRS="5000510,5000525 5000530,5000540 5000550,5000560 5000570,5000580 5000410,5000420 5000430,5000440 5000450,5000460 5000470,5000480 5000310,5000320 5000330,5000340 5000350,5000360 5000370,5000380 5000210,5000220 5000230,5000240 5000250,5000260 5000270,5000280 5000110,5000120 5000130,5000140 5000150,5000160 5000170,5000180"
-
-#export PT_BF_OPTS=''
+export PT_VISITLIST="$PT_WORKFLOWROOT/visitList.txt"
 
 export PT_PARALLEL_MAX=25  # "-j" parameter in makeBrighterFatterKernel.py
+
+export PT_NCORES=10      # number of cores one invocation may use
 
 #----------------------------------------------------------------
 

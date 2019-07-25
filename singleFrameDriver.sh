@@ -19,11 +19,13 @@ fi
 
 ## command line args
 visit=$1          # visit number to process
-dir=$2            # name for /rerun subdirectory
-nPar=$3           # number of parallel processes ('-j' option)
+rerundir=$2       # name for /rerun subdirectory
+nPar=$3           # number of parallel processes ('-j' option) **IGNORED**
 nCores=$4         # number of cores to use ('--ncores' options)
 
-echo "$pid $0"
+echo "$pid $@"
+
+exit
 
 echo;echo;echo
 echo "All environment variables:"
@@ -69,25 +71,26 @@ Tprefix="/usr/bin/time -v "
 # ## Note that $CP_PIPE_DIR comes from the DM stack setup
 # BFprefix=${CP_PIPE_DIR}/bin
 echo `date`"  Starting singleFrameDriver"
-
-## This is the DM code to generate the brighter-fatter kernels
-## set "doCalcGains=True" to compute bf gains from flats
-## set "doCalcGains=False" to use bf gains stored in <repo>/calibrations
-
 set -x
 
 ## This is the command to generate the BF kernels
-#${Tprefix} python ${BFprefix}/makeBrighterFatterKernel.py "${PT_REPODIR}" --rerun ${dir}  ${IDparm} --visit-pairs ${PT_BF_VISITPAIRS} -c xcorrCheckRejectLevel=2 doCalcGains=True isr.doDark=True isr.doBias=True isr.doCrosstalk=True isr.doDefect=False isr.doLinearize=False forceZeroSum=True correlationModelRadius=3 correlationQuadraticFit=True level=AMP ${clobberParm} ${BFoptions}
+#${Tprefix} python ${BFprefix}/makeBrighterFatterKernel.py "${PT_REPODIR}" --rerun ${rerundir}  ${IDparm} --visit-pairs ${PT_BF_VISITPAIRS} -c xcorrCheckRejectLevel=2 doCalcGains=True isr.doDark=True isr.doBias=True isr.doCrosstalk=True isr.doDefect=False isr.doLinearize=False forceZeroSum=True correlationModelRadius=3 correlationQuadraticFit=True level=AMP ${clobberParm} ${BFoptions}
 
 ## This is the command to invoke the singleFrameDriver
 
-#### TEMPORARY OVERRIDES
-visit=500086
-dir=test1
-nCores=10
-singleFrameDriver.py ${PT_REPODIR} --rerun ${dir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn
+
+#singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn
 
 
+
+
+
+cmd="${Tprefix} singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn"
+
+echo "cmd = "
+echo $cmd
+
+#eval $cmd
 rc=$?
 set +x
 echo "$pid [singleFrameDriver rc = "$rc"]"

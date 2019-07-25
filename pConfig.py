@@ -157,10 +157,10 @@ haswell1 = HighThroughputExecutor(
 ## This executor is intended to be used for interactive work on a
 ## single (haswell) login node
 
-haswellint = HighThroughputExecutor(
-    label='haswellint',
+haswellInt = HighThroughputExecutor(
+    label='haswellInt',
     address=address_by_hostname(),  # node upon which the top-level parsl script is running
-    cores_per_worker=1,
+    cores_per_worker=10,
     max_workers=1,                            # user tasks/node (small number to avoid hogging machine)
     poll_period=30,
     provider=LocalProvider(                 # Dispatch tasks on local machine only
@@ -214,7 +214,7 @@ config = Config(
     app_cache=True, 
     checkpoint_mode='task_exit', 
     executors=[
-        knlMj
+        haswellInt
     ],
     monitoring=MonitoringHub(
         hub_address=address_by_hostname(),
