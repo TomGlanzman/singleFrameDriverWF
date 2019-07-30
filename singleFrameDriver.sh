@@ -23,9 +23,9 @@ rerundir=$2       # name for /rerun subdirectory
 nPar=$3           # number of parallel processes ('-j' option) **IGNORED**
 nCores=$4         # number of cores to use ('--ncores' options)
 
-echo "$pid $@"
+echo "PID=$pid : args= $@"
 
-exit
+
 
 echo;echo;echo
 echo "All environment variables:"
@@ -71,7 +71,7 @@ Tprefix="/usr/bin/time -v "
 # ## Note that $CP_PIPE_DIR comes from the DM stack setup
 # BFprefix=${CP_PIPE_DIR}/bin
 echo `date`"  Starting singleFrameDriver"
-set -x
+#set -x
 
 ## This is the command to generate the BF kernels
 #${Tprefix} python ${BFprefix}/makeBrighterFatterKernel.py "${PT_REPODIR}" --rerun ${rerundir}  ${IDparm} --visit-pairs ${PT_BF_VISITPAIRS} -c xcorrCheckRejectLevel=2 doCalcGains=True isr.doDark=True isr.doBias=True isr.doCrosstalk=True isr.doDefect=False isr.doLinearize=False forceZeroSum=True correlationModelRadius=3 correlationQuadraticFit=True level=AMP ${clobberParm} ${BFoptions}
@@ -90,9 +90,9 @@ cmd="${Tprefix} singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visi
 echo "cmd = "
 echo $cmd
 
-#eval $cmd
+eval $cmd
 rc=$?
-set +x
+#set +x
 echo "$pid [singleFrameDriver rc = "$rc"]"
 
 
