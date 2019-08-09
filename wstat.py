@@ -236,7 +236,7 @@ class pmon:
         numTasks = len(tRows)
         duration = wrow['workflow_duration']
         if duration == None:
-            print('workflow script is either: running, crashed, or killed')
+            print('workflow script has not reported completion, i.e., running, crashed, or killed')
         else:
             print('workflow duration = ',duration,' (sec)')
             print('number of Tasks launched = ',numTasks)

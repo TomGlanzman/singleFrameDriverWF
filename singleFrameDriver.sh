@@ -73,17 +73,7 @@ Tprefix="/usr/bin/time -v "
 echo `date`"  Starting singleFrameDriver"
 #set -x
 
-## This is the command to generate the BF kernels
-#${Tprefix} python ${BFprefix}/makeBrighterFatterKernel.py "${PT_REPODIR}" --rerun ${rerundir}  ${IDparm} --visit-pairs ${PT_BF_VISITPAIRS} -c xcorrCheckRejectLevel=2 doCalcGains=True isr.doDark=True isr.doBias=True isr.doCrosstalk=True isr.doDefect=False isr.doLinearize=False forceZeroSum=True correlationModelRadius=3 correlationQuadraticFit=True level=AMP ${clobberParm} ${BFoptions}
-
 ## This is the command to invoke the singleFrameDriver
-
-
-#singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn
-
-
-
-
 
 cmd="${Tprefix} singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn"
 

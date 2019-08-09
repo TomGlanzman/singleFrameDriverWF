@@ -214,7 +214,7 @@ config = Config(
     app_cache=True, 
     checkpoint_mode='task_exit', 
     executors=[
-        haswellInt
+        knlMj
     ],
     monitoring=MonitoringHub(
         hub_address=address_by_hostname(),

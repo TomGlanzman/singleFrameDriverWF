@@ -57,7 +57,7 @@ print(datetime.datetime.now(), ": Parsl config complete!")
 ##    (one instance of calling this app generates one user 'task')
 ##
 
-@bash_app(executors=['haswellInt'],cache=True)
+@bash_app(executors=['knlMj'],cache=True)
 def pCmd(cmd, stdout=parsl.AUTO_LOGNAME, stderr=parsl.AUTO_LOGNAME, label=None):
     ## Generalized command processing for a given Parsl executor (defined in 'config')
     import os,sys,datetime

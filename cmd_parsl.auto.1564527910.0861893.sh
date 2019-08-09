@@ -1,0 +1,1 @@
+process_worker_pool.py  --max_workers=2 -p 0 -c 25 -m None --poll 30 --task_url=tcp://cori06:54538 --result_url=tcp://cori06:54575 --logdir=/global/u1/d/descdm/tomTest/singleFrameDriverWF/runinfo/006/knlMj --block_id=0 --hb_period=30 --hb_threshold=120 
