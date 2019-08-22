@@ -18,23 +18,31 @@ module swap PrgEnv-intel PrgEnv-gnu
 # module swap gcc gcc/6.3.0
 module swap gcc gcc/7.3.0
 
-module rm craype-network-aries
-module rm cray-libsci
+#module rm craype-network-aries
+#module rm cray-libsci
+module unload craype-network-aries
+module unload cray-libsci
 module unload craype
 export CC=gcc
 
 date;echo "source $STACKCVMFS/$LSST_STACK_VERSION/loadLSST.bash"
 source $STACKCVMFS/$LSST_STACK_VERSION/loadLSST.bash
 
-date;echo "setup lsst_distrib"
-setup lsst_distrib
+
+##### 8/21/2019 - Due to excessive length of PYTHONPATH modify setups...
+#date;echo "setup lsst_distrib"
+#setup lsst_distrib
+date;echo "setup pipe_drivers"
+setup pipe_drivers
+date;echo "setup obs_lsst"
+setup obs_lsst
+
 
 date;echo "setup -r $LOCALDIR/obs_lsst -j"
 #setup -r $LOCALDIR/obs_lsst -j
 setup -r $LOCALDIR/obs_lsst-gcc73/obs_lsst -j
 echo "Done!";date
 echo "Elapsed time (s) = $SECONDS"
-sleep 5
 ENDTIME=$(date +%s)
 echo "Elapsed time (s) = $(($ENDTIME - $STARTTIME))"
 export OMP_NUM_THREADS=1

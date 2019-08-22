@@ -54,17 +54,17 @@ export PT_REPODIR=${PT_OUTPUTDIR}'/tomTest/sfd-1'   # singleFrameDriver test rep
 ###########  Production running
 ###################################################
 
-## makeBrighterFatterKernel parameters
+## singleFrameDriver parameters
 
 ##     PT_RERUNDIR is the subdirectory under <repo>/rerun into which results are stored
 ##                 Note that this value may be adjusted later with a numeric postfix.
-export PT_RERUNDIR='20190730'
+export PT_RERUNDIR='20190813'
 
 export PT_VISITLIST="$PT_WORKFLOWROOT/visitList.txt"
 
-export PT_PARALLEL_MAX=25  # "-j" DM parallelization parameter [NOT CURRENTLY USED]
+export PT_PARALLEL_MAX=15  # "-j" DM parallelization parameter [NOT CURRENTLY USED]
 
-export PT_NCORES=25      # number of cores one invocation may use
+export PT_NCORES=15      # number of cores one invocation may use
 
 #----------------------------------------------------------------
 
