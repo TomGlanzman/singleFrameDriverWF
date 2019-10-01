@@ -57,11 +57,8 @@ print(datetime.datetime.now(), ": Parsl config complete!")
 ##    (one instance of calling this app generates one user 'task')
 ##
 
-@bash_app(executors=['knlMj'],cache=True)
+@bash_app(executors=['knl1'],cache=True)
 def pCmd(cmd, stdout=parsl.AUTO_LOGNAME, stderr=parsl.AUTO_LOGNAME, label=None):
-    ## Generalized command processing for a given Parsl executor (defined in 'config')
-    import os,sys,datetime
-    print(datetime.datetime.now(),' Entering pCmd:\n',cmd)
     return f'{cmd}'
 
 
@@ -84,10 +81,25 @@ ntasks = 0          ## Total number of tasks
 ## Read in list of visits to process
 visitList = [line.rstrip('\n') for line in open(os.environ['PT_VISITLIST'])]
 print('visitList contains ',len(visitList),' visits.')
+## Visit list content (first dozen entries):
+# VISIT    #RAFTS   #SENSORS
+# 500086	 2	  5
+# 500102	 14	  106
+# 500118	 10	  69
+# 500125	 4	  23
+# 500131	 12	  88
+# 500819	 2	  5
+# 500822	 4	  20
+# 500823	 2	  8
+# 500825	 4	  23
+# 501557	 10	  68
+# 505933	 6	  38
+# 505962	 21	  189
 
 
 ## Loop over all visits  (visit rerundir nParallel nCores)
 for visit in visitList:
+    ##### visit = 500131 ############## medium-size visit  (88 sensors/12 rafts) ################
     ntasks += 1
     cmd = workflowRoot+"/singleFrameDriver.sh "+str(visit)+" "+os.environ['PT_RERUNDIR']+" "+os.environ['PT_PARALLEL_MAX']+" "+os.environ['PT_NCORES']
     print('cmd = ',cmd)
@@ -97,6 +109,8 @@ for visit in visitList:
     ## Submit Parsl request for one visit
     print("Creating parsl task ",ntasks)
     tasksk.append(pCmd(cmd,label='singleFrameDrvr'))     # add new Parsl task to list
+
+    break      ############## BREAK OUT AFTER FIRST VISIT -- DEBUG ONLY!! ################
     pass
 
 print(" Total number of parsl tasks created = ",ntasks)
@@ -110,7 +124,7 @@ print(" Total number of parsl tasks created = ",ntasks)
 
 ## Wait for jobs to complete
 
-print("Begin waiting for defined tasks to complete...")
+print("Submit and wait for defined tasks to complete...")
 try:
     parsl.wait_for_current_tasks()
 except:         # Unhandled exception will cause script to abort
@@ -121,26 +135,29 @@ pass
 print("Check return code for each task")
 ### Can the .result() function also cause an exception???
 taskn = 0
-rc = 0
-try:
-    for task in tasksh:
-        print("waiting for Haswell job ",taskn)
-        print("rc = ",task.result())
-        taskn += 1
+print("Checking return codes...")
+for task in tasksk:
+    dir(task)
+    rc = 0
+    try:
+        rc=task.result()
+        print("rc (task.result()) = ",rc)
+    except AppFailure as a:
+        rc=a.exitcode
+        print("rc (AppFailure.exitcode) = ",rc)
         pass
-    for task in tasksk:
-        print("waiting for KNL job ",taskn)
-        print("rc = ",task.result())
-        taskn += 1
-        pass
-except Exception as ex:
-    print("Exception waiting for job ",taskn)
-    template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-    message = template.format(type(ex).__name__, ex.args)
-    print(message)
-    print(traceback.format_exc())
-    rc = 1
+    if rc == 0: taskn += 1
     pass
+print("# happy tasks = ",taskn)
+
+# except Exception as ex:
+#     print("Exception waiting for job ",taskn)
+#     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+#     message = template.format(type(ex).__name__, ex.args)
+#     print(message)
+#     print(traceback.format_exc())
+#     rc = 1
+#     pass
 
 
 

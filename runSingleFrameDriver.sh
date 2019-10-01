@@ -16,6 +16,6 @@ source $workflowroot/configTask.sh
 source $workflowroot/cvmfsSetup.sh
 
 ## Establish a repository for brighter-fatter generation (visit rerundir #procs #cores)
-test="test5"
-$workflowroot/singleFrameDriver.sh 500086 $test 10 10 |& tee $workflowroot/singleFrameDriver-${test}.log 
+test="test12"
+$workflowroot/singleFrameDriver.sh 500131 $test 50 50 |& tee $workflowroot/singleFrameDriver-${test}.log 
 

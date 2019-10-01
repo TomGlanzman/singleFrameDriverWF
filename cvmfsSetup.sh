@@ -29,13 +29,19 @@ date;echo "source $STACKCVMFS/$LSST_STACK_VERSION/loadLSST.bash"
 source $STACKCVMFS/$LSST_STACK_VERSION/loadLSST.bash
 
 
+date;echo "setup lsst_distrib"
+setup lsst_distrib
 ##### 8/21/2019 - Due to excessive length of PYTHONPATH modify setups...
-#date;echo "setup lsst_distrib"
-#setup lsst_distrib
-date;echo "setup pipe_drivers"
-setup pipe_drivers
-date;echo "setup obs_lsst"
-setup obs_lsst
+### This really does not work, as more and more packages are declared MIA...
+### So stick with the 'setup lsst_distrib'
+# date;echo "setup numerous packages..."
+# setup pipe_drivers
+# setup obs_lsst
+# setup meas_extensions_convolved
+# setup meas_extensions_photometryKron
+# setup meas_extensions_psfex
+# setup meas_extensions_shapeHSM
+# setup meas_modelfit
 
 
 date;echo "setup -r $LOCALDIR/obs_lsst -j"

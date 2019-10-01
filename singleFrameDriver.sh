@@ -20,8 +20,8 @@ fi
 ## command line args
 visit=$1          # visit number to process
 rerundir=$2       # name for /rerun subdirectory
-nPar=$3           # number of parallel processes ('-j' option) **IGNORED**
-nCores=$4         # number of cores to use ('--ncores' options)
+nPar=$3           # number of parallel processes ('-j' option)
+nCores=$4         # number of cores to use ('--ncores' options) DM batch mode only
 
 echo "PID=$pid : args= $@"
 
@@ -75,7 +75,7 @@ echo `date`"  Starting singleFrameDriver"
 
 ## This is the command to invoke the singleFrameDriver
 
-cmd="${Tprefix} singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn"
+cmd="${Tprefix} singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} -j ${nPar} --timeout 999999999 --loglevel CameraMapper=warn --batch-type none"
 
 echo "cmd = "
 echo $cmd
