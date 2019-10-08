@@ -57,7 +57,7 @@ print(datetime.datetime.now(), ": Parsl config complete!")
 ##    (one instance of calling this app generates one user 'task')
 ##
 
-@bash_app(executors=['knl1'],cache=True)
+@bash_app(executors=['knl'],cache=True)
 def pCmd(cmd, stdout=parsl.AUTO_LOGNAME, stderr=parsl.AUTO_LOGNAME, label=None):
     return f'{cmd}'
 
@@ -79,22 +79,10 @@ ntasks = 0          ## Total number of tasks
 
 
 ## Read in list of visits to process
-visitList = [line.rstrip('\n') for line in open(os.environ['PT_VISITLIST'])]
+### Note: new visit list format contains three numbers per line: visitID, #rafts, #sensors
+visitList = [line.rstrip('\n').split(' ')[0] for line in open(os.environ['PT_VISITLIST'])]
 print('visitList contains ',len(visitList),' visits.')
-## Visit list content (first dozen entries):
-# VISIT    #RAFTS   #SENSORS
-# 500086	 2	  5
-# 500102	 14	  106
-# 500118	 10	  69
-# 500125	 4	  23
-# 500131	 12	  88
-# 500819	 2	  5
-# 500822	 4	  20
-# 500823	 2	  8
-# 500825	 4	  23
-# 501557	 10	  68
-# 505933	 6	  38
-# 505962	 21	  189
+
 
 
 ## Loop over all visits  (visit rerundir nParallel nCores)

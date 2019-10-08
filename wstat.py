@@ -7,7 +7,7 @@
 ## Python dependencies: sqlite3, tabulate
 
 ## T.Glanzman - Spring 2019
-__version__ = "0.8.2"
+__version__ = "0.8.3"
 pVersion='0.8.0'    ## Parsl version
 
 import sys,os
@@ -216,7 +216,7 @@ class pmon:
 
         ##  Query the 'task' table
         runID = wrow['run_id']
-        sql = 'select task_id,hostname,task_time_submitted,task_time_running,task_time_returned,task_stdout  from task where run_id = "'+wrow['run_id']+'"'
+        sql = 'select task_id,hostname,task_fail_count,task_time_submitted,task_time_running,task_time_returned,task_stdout  from task where run_id = "'+wrow['run_id']+'"'
         (tRowz,tTitles) = self.stdQuery(sql)
 
         ## Convert from sqlite3.Row to a simple 'list'
@@ -226,7 +226,7 @@ class pmon:
 
         for rw in tRowz:
             tRows.append(list(rw))
-            tRows[-1][5] = os.path.basename(tRows[-1][5])
+            tRows[-1][stdoutIndx] = os.path.basename(tRows[-1][stdoutIndx])  ## Remove stdout file path
             pass
 
         #foo = self.stripms(

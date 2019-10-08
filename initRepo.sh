@@ -30,8 +30,6 @@ if [ ! -d ${PT_REPODIR} ]; then
     echo `date` " [Setup Reference Catalogs]"
     tar -xvf /global/projecta/projectdirs/lsst/production/DC2_ImSim/Run2.1i/ref_cats/ref_cat-v3/dc2_run2.1i_ref_cats_190513-v3.tar
 
-exit
-
     ## Copy in the (fake) brighter-fatter gains
     echo `date` " [Setup BF gains]"
     mkdir ${PT_REPODIR}/calibrations
@@ -40,8 +38,7 @@ exit
     ## Ingest some simulated data
     echo `date` " [ingestDriver.py image data]"
     # Note that "--cores" can probably be '1' as we're only creating sym-links
-    fitsFileList=ingestFileTest.txt
-    ingestDriver.py ${PT_REPODIR} @$PWDSAVE/${fitsFileList} --cores 5 --mode link --output ${PT_REPODIR} -c allowError=True register.ignore=True
+    ingestDriver.py ${PT_REPODIR} @$PWDSAVE/${PT_INGEST} --cores 5 --mode link --output ${PT_REPODIR} -c allowError=True register.ignore=True
     echo "[rc = "$?"]"
 
     cd $PWDSAVE    # return to original directory

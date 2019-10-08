@@ -3,6 +3,10 @@
 # inventory.py - Analyze a DM repo directory tree containing 'raw' (simulated) images
 #   NOTE: this script is very sensitive to details of directory structure and file naming!
 
+## User configs
+defRawDir='/global/cscratch1/sd/descdm/tomTest/sfd-2/raw'
+
+## 
 import os,sys
 import argparse
 #import datetime
@@ -11,6 +15,7 @@ import argparse
 import numpy as np
 import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
+import tabulate
 
 ## Command line parsing...  (NOTE: all cmd line args are **IGNORED** now...)
 parser = argparse.ArgumentParser(description='Search repo for raw image files and create inventory')
@@ -19,19 +24,21 @@ parser = argparse.ArgumentParser(description='Search repo for raw image files an
 #parser.add_argument('command', help='pilotMon command', default='summary', choices=commandList)
 
 ## Optional arguments
-parser.add_argument('-d','--directory',dest='dir',help="Directory to search")
-#parser.add_argument('-u','--userid',default='descpho',help="Specify userid running Pilot (default: %(default)s)")
-#parser.add_argument('-p','--prefix',default='phoSim',help="Specify pilot jobname prefix (default: %(default)s)")
+parser.add_argument('-d','--directory',dest='dir',default=defRawDir,help="Directory to search (default=%(default)s)")
+parser.add_argument('-p','--enablePlots',action='store_true',default=False,help="Enable histograms (default=%(default)s)")
+parser.add_argument('-l','--lineLimit',dest='lineLimit',type=int,default=20,help="Limit lines in visit report (default=%(default)s)")
+parser.add_argument('-v','--visitListFile',default=None,help="Name of visit list file (default=%(default)s)")
+
 
 ## Unpack arguments
 args = parser.parse_args()
 
-
+debug = False
 
 ## Locate directory containing visit/image files
 ##  **NOTE** the 'rootdir' must point the a 'raw' repo directory containing visit dirs.
-rootdir='/global/cscratch1/sd/descdm/tomTest/sfd-1/raw/'
-rootdir=os.path.dirname(rootdir)
+rootdir = args.dir
+if rootdir[-1] == '/':rootdir = rootdir[0:-1]  # remove trailing '/', if present
 print('Analyzing image directory: ',rootdir)
 startDepth=rootdir.count(os.sep)
 vDict = {}
@@ -81,10 +88,13 @@ print('Raw image directory tree analyzed.')
 ## Summarize the visit dictionary
 nVisits=0
 nSensors=0
+vList = list(vDict.keys())
+vList.sort()
 numSensorList = []
 numRaftList = []
+rows = []
 
-for visit in vDict:
+for visit in vList:
     nVisits += 1
     nSenPerVis = 0
     numRaftList.append(len(vDict[visit]))
@@ -94,27 +104,50 @@ for visit in vDict:
         nSenPerVis += nSens
         pass
     numSensorList.append(nSenPerVis)
+    rows.append([nVisits,visit,len(vDict[visit]),nSenPerVis])
     pass
-
 
 
 ## Produce report
 print('Image directory summary:')
 print('nVisits = ',nVisits,', nSensors = ',nSensors)
 print('Average sensors/visit = ',float(nSensors)/nVisits)
+
+if debug:
+    print('numSensorList = ',numSensorList)
+    print('numRaftList = ',numRaftList)
+
+
+## Pretty print out first "lineLimit" of: [visitID, #rafts, #sensors]
+colnames = ['#','visitID','#rafts','#sensors']
+tabFormat = "psql"
+print(tabulate.tabulate(rows[0:args.lineLimit],headers=colnames,tablefmt=tabFormat))
+
+## Produce a visit list file, if requested
+##   A text file with "visitID #rafts #sensors" per line
+if args.visitListFile != None:
+    print('Create visit list file!')
+    fd=open(args.visitListFile,'w')
+    for row in rows:
+        line = str(row[1])+' '+str(row[2])+' '+str(row[3])+'\n'
+        fd.write(line)
+        pass
+    fd.close()
+    pass
     
-print('numSensorList = ',numSensorList)
-print('numRaftList = ',numRaftList)
-      
 
 ## Histogram #rafts and #sensors
-n,bins,patches = plt.hist(numSensorList,189)
-print('n = ',n)
-print('bins = ',bins)
-print('patches = ',patches)
-plt.show()
-n,bins,patches = plt.hist(numRaftList,21)
-plt.show()
+if args.enablePlots:
+    n,bins,patches = plt.hist(numSensorList,189)
+    if debug:
+        print('n = ',n)
+        print('bins = ',bins)
+        print('patches = ',patches)
+        pass
+    plt.show()
+    n,bins,patches = plt.hist(numRaftList,21)
+    plt.show()
+    pass
 
 
 

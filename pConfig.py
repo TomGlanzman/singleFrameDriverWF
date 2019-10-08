@@ -39,27 +39,29 @@ hostName = address_by_hostname()
 ##  Define Parsl executors
 ##
 
+#####################################################################
 ## The following Executors are all based on the "High Throughput
 ## Executor" (or "HTEX") as recommended by the Parsl team.  They can
-## operate on configuration ranging from a single login (or batch)
-## node to many batch nodes.  These executors have been tuned for the
-## makeBrighterFatterKernel.py DM tool.
-#####################
+## operate on configurations ranging from a single login (or batch)
+## node to many batch nodes.  
+#####################################################################
 
 
-## EXPERIMENTAL executor that runs on a single batch node and bypasses 'srun'
+## EXPERIMENTAL executor whose configuration may change willy-nilly
 
-knl1 = HighThroughputExecutor(
-    label='knl1',
+knl = HighThroughputExecutor(
+    label='knl',
     address=address_by_hostname(),   # node upon which the top-level parsl script is running
     cores_per_worker=10,             # threads per user task (managed by a 'worker')
     max_workers=3,                   # user tasks/node
     poll_period=5000,                # (ms)
+    heartbeat_period = 300,
+    heartbeat_threshold = 1200,
     provider=SlurmProvider(          ## Dispatch tasks via SLURM
         partition='regular',         # SLURM job "queue"
-        walltime='04:00:00',         # max time for batch job
+        walltime='06:00:00',         # max time for batch job
         cmd_timeout=300,             # (s) Extend time waited in response to 'sbatch' command
-        nodes_per_block=1,           # Nodes per batch job
+        nodes_per_block=4,           # Nodes per batch job
         init_blocks=0,               # of batch jobs to submit in anticipation of future demand
         min_blocks=1,                # limits on # batch job requests
         max_blocks=1, 
@@ -68,32 +70,7 @@ knl1 = HighThroughputExecutor(
         worker_init=os.environ['PT_ENVSETUP'],          # Initial ENV setup
         channel=LocalChannel(),      # batch communication is performed on this local machine
         launcher=SimpleLauncher()    # One node only
-    ),
-)
-
-## This executor is intended for large-scale KNL batch work with
-## *multiple* nodes & workers/node and employing significant
-## parallelism within the DM code ("-j") or not
-
-knlM = HighThroughputExecutor(
-    label='knl',
-    address=address_by_hostname(),   # node upon which the top-level parsl script is running
-    cores_per_worker=10,             # threads per user task (managed by a 'worker')
-    max_workers=3,                   # user tasks/node
-    poll_period=5000,                # (ms)
-    provider=SlurmProvider(          ## Dispatch tasks via SLURM
-        partition='regular',         # SLURM job "queue"
-        walltime='04:00:00',         # max time for batch job
-        cmd_timeout=300,             # (s) Extend time waited in response to 'sbatch' command
-        nodes_per_block=1,           # Nodes per batch job
-        init_blocks=0,               # of batch jobs to submit in anticipation of future demand
-        min_blocks=1,                # limits on batch job requests
-        max_blocks=1, 
-        parallelism=0.1,             # reduce "extra" batch jobs
-        scheduler_options="#SBATCH -L SCRATCH,projecta \n#SBATCH --constraint=knl",
-        worker_init=os.environ['PT_ENVSETUP'],          # Initial ENV setup
-        channel=LocalChannel(),      # batch communication is performed on this local machine
-        launcher=SrunLauncher()      # SrunLauncher necessary for multi-node batch jobs
+#        launcher=SrunLauncher()      # Multiple nodes
     ),
 )
 
@@ -158,7 +135,7 @@ coriLogin=ThreadPoolExecutor(
 config = Config(
     app_cache=True, 
     checkpoint_mode='task_exit', 
-    executors=[knl1],
+    executors=[knl],
     monitoring=MonitoringHub(
         hub_address=address_by_hostname(),
         hub_port=55055,

@@ -47,7 +47,12 @@ export PT_DEBUG=False
 export PT_CALIBS='/global/projecta/projectdirs/lsst/production/DC2_ImSim/Run1.2i/CALIB/CALIB_Run1.2i.tar.gz'
 
 ##     PT_REPODIR is the location of output repository
-export PT_REPODIR=${PT_OUTPUTDIR}'/tomTest/sfd-1'   # singleFrameDriver test repo(s)
+#export PT_REPODIR=${PT_OUTPUTDIR}'/tomTest/sfd-1'   # Repo with sample data from Run 2.1i Y3 WFD
+export PT_REPODIR=${PT_OUTPUTDIR}'/tomTest/sfd-2'   # Repo with data from Run 2.1.1i agn test
+
+##     PT_INGEST is the file containing a list of all simulated image files to ingest
+##               Note: this file must reside in the workflow top-level directory
+export PT_INGEST=ingestFileList-Run2.1.1i.txt
 
 
 ###################################################
@@ -58,9 +63,10 @@ export PT_REPODIR=${PT_OUTPUTDIR}'/tomTest/sfd-1'   # singleFrameDriver test rep
 
 ##     PT_RERUNDIR is the subdirectory under <repo>/rerun into which results are stored
 ##                 Note that this value may be adjusted later with a numeric postfix.
-export PT_RERUNDIR='20190926'
+export PT_RERUNDIR='20191004'
 
-export PT_VISITLIST="$PT_WORKFLOWROOT/visitList.txt"
+#export PT_VISITLIST="$PT_WORKFLOWROOT/visitList.txt"  ## Run 2.1i Y3 WFD
+export PT_VISITLIST="$PT_WORKFLOWROOT/visitList-2.txt"  ## Run 2.1.1i agn test
 
 export PT_PARALLEL_MAX=10  # "-j" DM parallelization parameter
 
