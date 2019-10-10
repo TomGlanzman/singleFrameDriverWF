@@ -27,7 +27,7 @@ parser = argparse.ArgumentParser(description='Search repo for raw image files an
 parser.add_argument('-d','--directory',dest='dir',default=defRawDir,help="Directory to search (default=%(default)s)")
 parser.add_argument('-p','--enablePlots',action='store_true',default=False,help="Enable histograms (default=%(default)s)")
 parser.add_argument('-l','--lineLimit',dest='lineLimit',type=int,default=20,help="Limit lines in visit report (default=%(default)s)")
-parser.add_argument('-v','--visitListFile',default=None,help="Name of visit list file (default=%(default)s)")
+parser.add_argument('-v','--visitListFile',default=None,help="Name of visit list file to produce (default=%(default)s)")
 
 
 ## Unpack arguments

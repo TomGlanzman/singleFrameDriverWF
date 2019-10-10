@@ -32,8 +32,9 @@ if [ ! -d ${PT_REPODIR} ]; then
 
     ## Copy in the (fake) brighter-fatter gains
     echo `date` " [Setup BF gains]"
-    mkdir ${PT_REPODIR}/calibrations
-    cp -pr ${PT_REPODIR}/../fake/bfGain*.pkl ${PT_REPODIR}/calibrations
+    #mkdir ${PT_REPODIR}/calibrations
+    #cp -pr ${PT_REPODIR}/../fake/bfGain*.pkl ${PT_REPODIR}/calibrations
+    cp -pr /global/projecta/projectdirs/lsst/production/DC2_ImSim/Run2.1i/CALIB/bfkernels-v1/calibrations ${PT_REPODIR}
 
     ## Ingest some simulated data
     echo `date` " [ingestDriver.py image data]"

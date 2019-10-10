@@ -75,7 +75,11 @@ echo `date`"  Starting singleFrameDriver"
 
 ## This is the command to invoke the singleFrameDriver
 
-cmd="${Tprefix} singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} -j ${nPar} --timeout 999999999 --loglevel CameraMapper=warn --batch-type none"
+### PRODUCTION command
+#cmd="${Tprefix} singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} -j ${nPar} --timeout 999999999 --loglevel CameraMapper=warn --batch-type none"
+
+### TEST/DEV command
+cmd="${Tprefix} singleFrameDriver.py ${PT_REPODIR} --rerun ${rerundir} --id visit=${visit} --cores ${nCores} --timeout 999999999 --loglevel CameraMapper=warn --batch-type smp --mpiexec='-launcher ssh'"
 
 echo "cmd = "
 echo $cmd

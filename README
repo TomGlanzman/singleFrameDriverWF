@@ -26,3 +26,9 @@ wstat.py	        - Parsl stand-alone monitoring summary tool
 
 visitList.txt		- A list of visitIDs gleaned from the $REPO/raw directory listing
 
+
+
+getVisit.py		- interrogate the DM registry.sqlite3 file for details of the 'raw' data
+
+inventory.py		- walk DM 'raw' directory tree for summary of the
+			  'raw' data contained therein

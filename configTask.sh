@@ -63,14 +63,14 @@ export PT_INGEST=ingestFileList-Run2.1.1i.txt
 
 ##     PT_RERUNDIR is the subdirectory under <repo>/rerun into which results are stored
 ##                 Note that this value may be adjusted later with a numeric postfix.
-export PT_RERUNDIR='20191004'
+export PT_RERUNDIR='20191008'
 
 #export PT_VISITLIST="$PT_WORKFLOWROOT/visitList.txt"  ## Run 2.1i Y3 WFD
 export PT_VISITLIST="$PT_WORKFLOWROOT/visitList-2.txt"  ## Run 2.1.1i agn test
 
 export PT_PARALLEL_MAX=10  # "-j" DM parallelization parameter
 
-export PT_NCORES=1      # number of cores one DM tool invocation may use [NOT CURRENTLY USED]
+export PT_NCORES=10        # number of cores one DM tool invocation may use
 
 #----------------------------------------------------------------
 

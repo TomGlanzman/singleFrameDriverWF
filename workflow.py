@@ -87,7 +87,7 @@ print('visitList contains ',len(visitList),' visits.')
 
 ## Loop over all visits  (visit rerundir nParallel nCores)
 for visit in visitList:
-    ##### visit = 500131 ############## medium-size visit  (88 sensors/12 rafts) ################
+    visit = 500131 ############## medium-size visit  (88 sensors/12 rafts) ################
     ntasks += 1
     cmd = workflowRoot+"/singleFrameDriver.sh "+str(visit)+" "+os.environ['PT_RERUNDIR']+" "+os.environ['PT_PARALLEL_MAX']+" "+os.environ['PT_NCORES']
     print('cmd = ',cmd)
